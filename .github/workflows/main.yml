@@ -87,7 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Build (${{ matrix.targetPlatform }})
-          path: build
+          path: build/${{ matrix.targetPlatform }}
 
   deployPages:
     needs: build
