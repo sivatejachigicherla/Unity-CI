@@ -64,8 +64,8 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - Android # Build an Android .apk standalone app.
+          #- StandaloneWindows64 # Build a Windows 64-bit standalone.
+          #- Android # Build an Android .apk standalone app.
           - WebGL # WebGL.
     steps:
       - uses: actions/checkout@v2
@@ -87,7 +87,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: Build (${{ matrix.targetPlatform }})
-          path: build/${{ matrix.targetPlatform }}
+          path: build
 
   deployPages:
     needs: build
@@ -106,4 +106,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
-          folder: build/WebGL
+          folder: build
