@@ -64,8 +64,8 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          #- StandaloneWindows64 # Build a Windows 64-bit standalone.
-          #- Android # Build an Android .apk standalone app.
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - Android # Build an Android .apk standalone app.
           - WebGL # WebGL.
     steps:
       - uses: actions/checkout@v2
@@ -75,10 +75,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: Library
-          key: Library-Build-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-
-            Library-Build-
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
       - uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -86,8 +84,8 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v2
         with:
-          name: Build (${{ matrix.targetPlatform }})
-          path: /github/workspace/build/${{ matrix.targetPlatform }}
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
 
   deployPages:
     needs: build
@@ -100,10 +98,10 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: build-WebGL
-          path: build
+          path: build/WebGL
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
-          folder: build
+          folder: build/WebGL
